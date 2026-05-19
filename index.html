@@ -79,12 +79,6 @@
         .media-preview-prev, .media-preview-next { background: #ff99cc; color: white; }
         .media-preview-prev:hover, .media-preview-next:hover { background: #ff66b3; }
         
-        /* 同步状态指示器 */
-        .sync-indicator { position: fixed; top: 20px; right: 20px; background: white; border-radius: 20px; padding: 8px 15px; box-shadow: 0 2px 10px rgba(255, 102, 179, 0.2); display: flex; align-items: center; gap: 8px; z-index: 1001; font-size: 14px; color: #5a2e48; }
-        .sync-icon { width: 16px; height: 16px; border: 2px solid #ff66b3; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; }
-        .sync-icon.synced { animation: none; border-color: #4CAF50; border-top-color: transparent; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         /* 弹窗控件 */
         .login-modal input, .create-folder-modal input, .target-modal input, .target-modal textarea { margin: 0.5rem 0; padding: 10px 15px; width: 100%; border: 2px solid #ffb3d9; border-radius: 15px; outline: none; color: #5a2e48; }
         .target-modal textarea { min-height: 150px; resize: vertical; font-family: inherit; }
@@ -141,7 +135,6 @@
             .media-section { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .home-page { flex-direction: column; text-align: center; }
             .cartoon-img { margin: 0 auto 2rem; }
-            .sync-indicator { top: 10px; right: 10px; font-size: 12px; padding: 6px 12px; }
         }
         
         /* 移动端优化 */
@@ -188,11 +181,6 @@
     </style>
 </head>
 <body>
-    <!-- 同步状态指示器 -->
-    <div class="sync-indicator" id="syncIndicator">
-        <div class="sync-icon" id="syncIcon"></div>
-        <span id="syncStatus">Syncing...</span>
-    </div>
 
     <!-- 侧边栏 -->
     <div class="sidebar">
@@ -455,27 +443,6 @@
         ];
 
         // ========== 数据同步功能 ==========
-        // 更新同步状态指示器
-        function updateSyncStatus(status, message = "") {
-            const syncIcon = document.getElementById('syncIcon');
-            const syncStatus = document.getElementById('syncStatus');
-            
-            syncIcon.className = 'sync-icon';
-            switch(status) {
-                case 'syncing':
-                    syncIcon.classList.add('syncing');
-                    syncStatus.textContent = message || 'Syncing...';
-                    break;
-                case 'synced':
-                    syncIcon.classList.add('synced');
-                    syncStatus.textContent = message || 'Synced';
-                    break;
-                case 'pending':
-                    syncStatus.textContent = message || 'Pending sync...';
-                    break;
-            }
-        }
-
         // 保存数据到远程存储（模拟）
         async function saveDataToRemote() {
             updateSyncStatus('syncing');
